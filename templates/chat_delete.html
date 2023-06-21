@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Delete chat
+{% endblock title %}
+
+{% block content %}
+<form action="" method="post">{% csrf_token %}
+  <input type="submit" value="Удалить чат: {{ chat.name }}">
+</form>
+{% endblock content %}

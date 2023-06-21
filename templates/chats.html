@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+<form class="form-inline">
+  <a class="btn btn-outline-light btn-sm" href="{% url 'chat_new' %}" role="button">Добавить чат</a>
+</form>
+{% endblock navbar %}
+
+{% block content %}
+<ul>
+  {% for chat in chat_list %}
+  <li>
+    <a href="{% url 'employees' chat_pk=chat.pk %}">{{chat.name}}</a>
+    {% if chat.tl == user %}
+      | <a href="{% url 'chat_edit' chat.pk %}">Редактировать</a>
+      <a href="{% url 'chat_delete' chat.pk %}">Удалить</a>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% endblock content %}

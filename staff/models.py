@@ -1,10 +1,21 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.urls import reverse
 
 
 class Employee(models.Model):
+
+    class WorkStatus(models.TextChoices):
+        WORK = 'Работает', 'Работает'
+        AWAY = 'Отошел', 'Отошел'
+        DAY_OFF = 'Выходной', 'Выходной'
+
     tg_login = models.CharField(max_length=30, unique=True)
-    work_status = models.BooleanField(default=True)
+    work_status = models.CharField(
+        max_length=10,
+        choices=WorkStatus.choices,
+        default=WorkStatus.WORK,
+    )
     chat = models.ForeignKey(
         'Chat',
         on_delete=models.CASCADE,
@@ -12,6 +23,9 @@ class Employee(models.Model):
 
     def __str__(self):
         return self.tg_login
+
+    def get_absolute_url(self):
+        return reverse('employees', args=[str(self.chat.pk)])
 
 
 class Chat(models.Model):
@@ -24,6 +38,9 @@ class Chat(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('chats')
 
 
 class AwayLimit(models.Model):

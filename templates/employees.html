@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+{% if chat.tl == user %}
+  <form class="form-inline">
+    <a class="btn btn-outline-light btn-sm" href="{% url 'employee_new' chat_pk=chat.pk %}" role="button">Добавить сотрудника</a>
+  </form>
+{% endif %}
+{% endblock navbar %}
+
+{% block content %}
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Логин</th>
+      <th scope="col">Статус</th>
+      <th scope="col">Чат</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for employee in employee_list %}
+      {% if employee.chat == chat %}
+        <tr>
+          <td>{{employee.tg_login}}</td>
+          <td>{{ employee.work_status }}</td>
+          <td>{{employee.chat}}</td>
+          <td>
+            {% if employee.chat.tl == user %}
+              <a class="btn btn-outline-primary btn-sm" href="{% url 'employee_edit' pk=employee.pk chat_pk=chat.pk %}">Редактировать</a>
+              <a class="btn btn-outline-danger btn-sm" href="{% url 'employee_delete' pk=employee.pk chat_pk=chat.pk %}">Удалить</a>
+            {% endif %}
+          </td>
+        </tr>
+      {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock content %}
